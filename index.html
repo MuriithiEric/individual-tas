@@ -8,7 +8,24 @@
 </head>
 <body>
   <div id="#app">
-      
+    <!-- Entry point of our app, this is the one way binding of our app,
+      basically the html section-->
+    <div class="lesson">
+      <div class="info">
+        <p>Subject: {{ lesson.subject }}</p>
+        <p>Location: {{ lesson.location }}</p>
+        <img v-bind:src="product.image">
+        <h2>{{ lesson.heading}}</h2>
+        <h4>{{ lesson.subject }}</h4>
+        <p>{{ lesson.location }}</p>
+        <p>Price: £{{ lesson.price }}</p>
+        <p>Spaces: {{ lesson.numberOfSpaces }}</p>
+      </div>
+      <button v-on:click="addToCart">
+        Add To Cart
+      </button>
+    </div>
+  </div>
   </div>  
 </body>
 </html>
