@@ -1,31 +1,57 @@
-<!doctype html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Individual Coursework</title>
-    <script src="https://unpkg.com/vue"></script><!-- vue package, notifies that this is vue we are working with -->    
-</head>
-<body>
-  <div id="#app">
-    <!-- Entry point of our app, this is the one way binding of our app,
-      basically the html section-->
-    <div class="lesson">
-      <div class="info">
-        <p>Subject: {{ lesson.subject }}</p>
-        <p>Location: {{ lesson.location }}</p>
-        <img v-bind:src="product.image">
-        <h2>{{ lesson.heading}}</h2>
-        <h4>{{ lesson.subject }}</h4>
-        <p>{{ lesson.location }}</p>
-        <p>Price: £{{ lesson.price }}</p>
-        <p>Spaces: {{ lesson.numberOfSpaces }}</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Coursework 1</title>
+    <script src="https://unpkg.com/vue"></script>
+    
+  </head>
+  <body>
+    <div id="app">
+      <h1>After School Club</h1>
+      <!-- Entry point of our application -->
+      <div class="lesson">
+        <div class="info">
+          <p>Subject: {{ lesson.subject }}</p>
+          <p>Location: {{ lesson.location }}</p>
+          <p>Price: £{{ lesson.price }}</p>
+          <p>Spaces: {{ lesson.numberOfSpaces }}</p>
+        </div>
+        <button v-show="canAddToCart" v-on:click="addToCart">
+          Add To Cart
+        </button>
+        <button v-show="!canAddToCart" disabled="true" v-on:click="addToCart">
+          Add To Cart
+        </button>
       </div>
-      <button v-on:click="addToCart">
-        Add To Cart
-      </button>
     </div>
-  </div>
-  </div>  
-</body>
+    <script>
+      const instance = new Vue({
+        el: "#app",
+        data: {
+          lesson: {
+            subject: "Math",
+            location: "London",
+            price: 100,
+            image: "math.jpeg",
+            numberOfSpaces: 5,
+          },
+        },
+        methods: {
+          addToCart: function () {
+            if (this.lesson.numberOfSpaces > 0) {
+              this.lesson.numberOfSpaces -= 1;
+            }
+          },
+        },
+        computed: {
+          canAddToCart() {
+            return this.lesson.numberOfSpaces > 0;
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
