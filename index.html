@@ -21,7 +21,7 @@
         <h1 v-text="sitename"></h1>
       </header>
 
-      <div v-if="showLessons">
+      <div v-if="showLesson">
         <div>
           <button
             v-on:click="showCheckout"
@@ -42,7 +42,7 @@
                 type="radio"
                 name="Sort"
                 value="price"
-                v-on:click="sortedProducts('price', ord)"
+                v-on:click="sortedLessons('price', ord)"
               />
               Price
             </label>
@@ -76,24 +76,23 @@
       <br />
       <!-- Entry point of our application -->
 
-      <div v-if="showLessons">
-        <div v-for="lessons in lessons">
+      <div v-if="showLesson">
+        <div v-for="lesson in sortedLessons(sort, ord)">
           <div class="row">
             <div class="column">
               <div class="lesson">
-                <p>Subject: {{ lessons.subject }}</p>
-                <p>Location: {{ lessons.location }}</p>
-                <img v-bind:src="lessons.image" />
-                <p>Price: £{{ lessons.price }}</p>
-                <p>Spaces: {{ lessons.space - cartCount(lessons)}}</p>
-                <button v-on:click="addToCart(lessons)" v-if="addToCart">
+                <p v-text="lesson.subject"></p>
+                <p>Location: {{ lesson.location }}</p>
+                <img v-bind:src="lesson.image" />
+                <p>Price: £{{ lesson.price }}</p>
+                <p>Spaces: {{ lesson.space - cartCount(lesson)}}</p>
+                <button v-on:click="addToCart(lesson)" v-if="addToCart">
                   <!-- v-if="canAddToCart(lessons)" -->
                   Add to cart
                 </button>
                 <button disabled="disabled" v-else>Add to cart</button>
-                <span v-if="lessons.space - cartCount(lessons)"> </span>
-                <span v-else-if="lessons.space - cartCount(lessons) < 10">
-                </span>
+                <span v-if="lesson.space - cartCount(lesson)"> </span>
+                <span v-else-if="lesson.space - cartCount(lesson) < 10"> </span>
                 <span v-else>Buy now!</span>
               </div>
             </div>
@@ -124,7 +123,7 @@
             number: "",
           },
           sitename: "Individual Task",
-          showLessons: true,
+          showLesson: true,
           lessons: lessons,
           cart: [],
           sort: "subj",
@@ -144,6 +143,86 @@
           },
           canAddToCart(lessons) {
             return lessons.space > this.cartCount(lessons);
+          },
+          sortedLessons(sort, order) {
+            let LessonsArray = this.lessons.slice(0);
+            switch (sort) {
+              // sort by price
+              case "price":
+                if (order == "asc") {
+                  function comparePrice(a, b) {
+                    if (a.price > b.price) return 1;
+                    if (a.price < b.price) return -1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(comparePrice);
+                } else {
+                  function comparePrice(a, b) {
+                    if (a.price > b.price) return -1;
+                    if (a.price < b.price) return 1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(comparePrice);
+                }
+                break;
+
+              // sort by location
+              case "loc":
+                if (order == "asc") {
+                  function compareLocation(a, b) {
+                    if (a.location > b.location) return 1;
+                    if (a.location < b.location) return -1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareLocation);
+                } else {
+                  function compareLocation(a, b) {
+                    if (a.location > b.location) return -1;
+                    if (a.location < b.location) return 1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareLocation);
+                }
+                break;
+
+              // sort by availability
+              case "avail":
+                if (order == "asc") {
+                  function compareSpace(a, b) {
+                    if (a.space > b.space) return 1;
+                    if (a.space < b.space) return -1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareSpace);
+                } else {
+                  function compareSpace(a, b) {
+                    if (a.space > b.space) return -1;
+                    if (a.space < b.space) return 1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareSpace);
+                }
+                break;
+
+              // by default, compare subject
+              default:
+                if (order == "asc") {
+                  function compareSubject(a, b) {
+                    if (a.subject > b.subject) return 1;
+                    if (a.subject < b.subject) return -1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareSubject);
+                } else {
+                  function compareSubject(a, b) {
+                    if (a.subject > b.subject) return -1;
+                    if (a.subject < b.subject) return 1;
+                    return 0;
+                  }
+                  return LessonsArray.sort(compareSubject);
+                }
+                break;
+            }
           },
           cartCount(id) {
             let count = 0;
