@@ -1,4 +1,4 @@
-let products = [
+let lessons = [
   {
     id: 1001,
     subject: "Math",
@@ -6,6 +6,7 @@ let products = [
     price: 150,
     space: 5,
     image: "./images/math1.jpg",
+    rating: 2,
   },
   {
     id: 1002,
@@ -13,7 +14,8 @@ let products = [
     location: "Manchester",
     price: 160,
     space: 5,
-    image: "./images/biology.jpg",
+    image: "./images/math1.jpg",
+    rating: 1,
   },
   {
     id: 1003,
@@ -22,6 +24,7 @@ let products = [
     price: 170,
     space: 5,
     image: "./images/chemistry.jpg",
+    rating: 2,
   },
   {
     id: 1004,
@@ -29,7 +32,8 @@ let products = [
     location: "Leicester",
     price: 180,
     space: 5,
-    image: "./images/cre.jpg",
+    image: "./images/history.jpg",
+    rating: 3,
   },
   {
     id: 1005,
@@ -38,6 +42,7 @@ let products = [
     price: 190,
     space: 5,
     image: "./images/history.jpg",
+    rating: 6,
   },
   {
     id: 1006,
@@ -46,6 +51,7 @@ let products = [
     price: 200,
     space: 5,
     image: "./images/language.jpg",
+    rating: 5,
   },
   {
     id: 1007,
@@ -54,6 +60,7 @@ let products = [
     price: 210,
     space: 5,
     image: "./images/literature.jpg",
+    rating: 9,
   },
   {
     id: 1008,
@@ -62,6 +69,7 @@ let products = [
     price: 220,
     space: 5,
     image: "./images/physics.jpg",
+    rating: 8,
   },
   {
     id: 1009,
@@ -69,14 +77,15 @@ let products = [
     location: "London",
     price: 230,
     space: 5,
-    image: "./images/science.jpg",
+    image: "./images/ss.jpg",
+    rating: 7,
   },
   {
     id: 1010,
     subject: "Social Studies",
     location: "Chichester",
     price: 240,
-    space: 5,
+    space: 10,
     image: "./images/ss.jpg",
   },
 ];
