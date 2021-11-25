@@ -86,7 +86,10 @@
                 <img v-bind:src="lesson.image" />
                 <p>Price: £{{ lesson.price }}</p>
                 <p>Spaces: {{ lesson.space - cartCount(lesson)}}</p>
-                <button v-on:click="addToCart(lesson)" v-if="addToCart">
+                <button
+                  v-on:click="addToCart(lesson)"
+                  v-if="canAddToCart(lesson)"
+                >
                   <!-- v-if="canAddToCart(lessons)" -->
                   Add to cart
                 </button>
@@ -100,16 +103,58 @@
         </div>
       </div>
       <div v-else>
+        <h2>Checkout Page</h2>
         <h3>Shopping Cart Page</h3>
-        <p>
-          <strong>Name:</strong>
-          <input v-model.trim="order.firstName" />
-        </p>
-        <p>
-          <strong>Number:</strong>
-          <input v-model.number="order.number" />
-        </p>
-        <button v-on:click="checkout"></button>
+        <div>
+          <button v-on:click="showCheckout">
+            <span></span>Classes Available
+          </button>
+        </div>
+        <div v-for="lesson in cart">
+          <h2 v-text="lesson.subject"></h2>
+          <figure>
+            <img v-bind:src="lesson.image" />
+          </figure>
+        </div>
+        <div>
+          <div>
+            <button v-on:click="removeItem(lesson)">Remove Item</button>
+          </div>
+        </div>
+
+        <form>
+          <div class="row m-5">
+            <div class="form-group col-4">
+              <input
+                v-model="order.name"
+                class="form-control border-top-0 border-left-0 border-right-0"
+                placeholder=" Name"
+              />
+            </div>
+            <div class="form-group col-4">
+              <input
+                v-model.number="order.number"
+                class="form-control border-top-0 border-left-0 border-right-0"
+                placeholder="Phone"
+              />
+            </div>
+            <div class="form-group col-4">
+              <div class="form-group col-4">
+                <button
+                  class="btn btn-primary"
+                  v-if="checkoutBtn"
+                  v-on:click="submitForm"
+                >
+                  Checkout
+                </button>
+
+                <button class="btn btn-secondary" disabled v-else>
+                  Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <br />
     </div>
@@ -135,14 +180,17 @@
               this.lesson.numberOfSpaces -= 1;
             }
           },*/
+          removeItem(lesson) {
+            this.cart.splice(this.cart.indexOf(lesson));
+          },
           showCheckout() {
-            this.showLessons = this.showLessons ? false : true;
+            this.showLesson = this.showLesson ? false : true;
           },
-          addToCart(lessons) {
-            this.cart.push(lessons);
+          addToCart(lesson) {
+            this.cart.push(lesson);
           },
-          canAddToCart(lessons) {
-            return lessons.space > this.cartCount(lessons);
+          canAddToCart(lesson) {
+            return lesson.space > this.cartCount(lesson);
           },
           sortedLessons(sort, order) {
             let LessonsArray = this.lessons.slice(0);
@@ -243,6 +291,13 @@
           },*/
           cartItemCount() {
             return this.cart.length;
+          },
+          checkoutBtn() {
+            if (this.order.Name && this.order.phoneNum) {
+              return true;
+            } else {
+              return false;
+            }
           },
         },
       });
