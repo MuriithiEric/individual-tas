@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Group Coursework 1</title>
+    <title>Coursework</title>
     <script src="https://unpkg.com/vue"></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
@@ -103,23 +104,17 @@
         </div>
       </div>
       <div v-else>
-        <h2>Checkout Page</h2>
         <h3>Shopping Cart Page</h3>
         <div>
-          <button v-on:click="showCheckout">
-            <span></span>Classes Available
-          </button>
+          <button v-on:click="showCheckout"><span></span>Go back</button>
         </div>
         <div v-for="lesson in cart">
-          <h2 v-text="lesson.subject"></h2>
+          <h4 v-text="lesson.subject"></h4>
           <figure>
             <img v-bind:src="lesson.image" />
           </figure>
-        </div>
-        <div>
-          <div>
-            <button v-on:click="removeItem(lesson)">Remove Item</button>
-          </div>
+          <p>Price: £{{lesson.price}}</p>
+          <button v-on:click="removeItem(lesson)">Remove Item</button><br />
         </div>
 
         <form>
@@ -129,6 +124,8 @@
                 v-model="order.name"
                 class="form-control border-top-0 border-left-0 border-right-0"
                 placeholder=" Name"
+                type="text"
+                v-on:keypress="isLetter($event)"
               />
             </div>
             <div class="form-group col-4">
@@ -136,13 +133,15 @@
                 v-model.number="order.number"
                 class="form-control border-top-0 border-left-0 border-right-0"
                 placeholder="Phone"
+                type="number"
+                v-on:keypress="isLetterOrNumber($event)"
               />
             </div>
             <div class="form-group col-4">
               <div class="form-group col-4">
                 <button
                   class="btn btn-primary"
-                  v-if="checkoutBtn"
+                  v-if="checkout"
                   v-on:click="submitForm"
                 >
                   Checkout
@@ -167,6 +166,10 @@
             name: "",
             number: "",
           },
+          data: () => ({
+            name: "",
+            firstName: "",
+          }),
           sitename: "Individual Task",
           showLesson: true,
           lessons: lessons,
@@ -176,10 +179,10 @@
         },
         methods: {
           /*addToCart: function () {
-            if (this.lesson.numberOfSpaces > 0) {
-              this.lesson.numberOfSpaces -= 1;
-            }
-          },*/
+                  if (this.lesson.numberOfSpaces > 0) {
+                    this.lesson.numberOfSpaces -= 1;
+                  }
+                },*/
           removeItem(lesson) {
             this.cart.splice(this.cart.indexOf(lesson));
           },
@@ -191,6 +194,20 @@
           },
           canAddToCart(lesson) {
             return lesson.space > this.cartCount(lesson);
+          },
+          submitForm() {
+            alert("Order submitted!");
+          },
+          isLetter(e) {
+            let char = String.fromCharCode(e.keyCode); // Get the character
+            if (/^[A-Za-z]+$/.test(char)) return true;
+            // Match with regex
+            else e.preventDefault(); // If not match, don't add to input text
+          },
+          isLetterOrNumber(e) {
+            let char = String.fromCharCode(e.keyCode);
+            if (/^[A-Za-z0-9]+$/.test(char)) return true;
+            else e.preventDefault();
           },
           sortedLessons(sort, order) {
             let LessonsArray = this.lessons.slice(0);
@@ -272,6 +289,7 @@
                 break;
             }
           },
+
           cartCount(id) {
             let count = 0;
             for (let i = 0; i < this.cart.length; i++) {
@@ -287,13 +305,13 @@
         },
         computed: {
           /*canAddToCart() {
-            return this.lesson.numberOfSpaces > 0;
-          },*/
+                  return this.lesson.numberOfSpaces > 0;
+                },*/
           cartItemCount() {
             return this.cart.length;
           },
-          checkoutBtn() {
-            if (this.order.Name && this.order.phoneNum) {
+          checkout() {
+            if (this.order.name && this.order.number) {
               return true;
             } else {
               return false;
